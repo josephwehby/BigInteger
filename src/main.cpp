@@ -6,7 +6,7 @@ int main() {
   std::cout << "STRING TO BIGINT " << a << std::endl;
   
 
-  BigInt b(123456789);
+  BigInt b(12345678);
   std::cout << "INT TO BIGINT " << b << std::endl;
   return 0;
 }
