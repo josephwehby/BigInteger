@@ -1,1 +1,0 @@
-/usr/bin/c++  -Wall -Werror -Wno-format-security -Wno-self-assign-overloaded CMakeFiles/main.dir/src/BigInteger.cpp.o CMakeFiles/main.dir/src/main.cpp.o -o bin/main 

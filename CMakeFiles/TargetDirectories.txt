@@ -1,3 +1,0 @@
-/mnt/c/users/josep/Documents/Programming/C++/BigInteger/CMakeFiles/main.dir
-/mnt/c/users/josep/Documents/Programming/C++/BigInteger/CMakeFiles/edit_cache.dir
-/mnt/c/users/josep/Documents/Programming/C++/BigInteger/CMakeFiles/rebuild_cache.dir
