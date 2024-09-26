@@ -1,12 +1,17 @@
 #include "BigInteger.hpp"
 
-BigInt::BigInt(const int& n) {
+BigInt::BigInt(int n) {
   if (n < 0) {
     isNegative = true;
   } else {
     isNegative = false;
   }
-
+  
+  while (n > 0) {
+    int digit = n%10;
+    digits.push_back(digit);
+    n = n/10;
+  }
 
 }
 

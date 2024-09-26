@@ -8,7 +8,7 @@
 
 class BigInt {
   public:
-      BigInt(const int&);
+      BigInt(int);
       BigInt(const std::string&);
       friend std::ostream& operator<<(std::ostream&, const BigInt&);
   private:  
