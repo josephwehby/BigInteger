@@ -6,18 +6,17 @@
 #include <string>
 #include <vector>
 
-class BigInt {
-  public:
-      BigInt(int);
-      BigInt(const std::string&);
-      friend std::ostream& operator<<(std::ostream&, const BigInt&);
-  private:  
-    std::vector<uint8_t> digits;
-    bool isNegative;
-    uint32_t size;
-};
+struct BigInt {
+  std::vector<uint8_t> digits;
+  bool isNegative;
+  uint32_t size;
 
-namespace BigIntegerMath {
-  BigInt add(const BigInt& a, const BigInt& b);
-  BigInt add(const BigInt& a, const BigInt& b);
+  friend std::ostream& operator<<(std::ostream&, const BigInt&);
+};
+ 
+namespace bigintmath {
+  BigInt BigIntFromString(const std::string&);
+  BigInt BigIntFromInt(int);
+  BigInt Add(const BigInt& a, const BigInt& b);
+  BigInt Subtract(const BigInt& a, const BigInt& b);
 }
