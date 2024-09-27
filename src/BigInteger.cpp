@@ -66,5 +66,17 @@ BigInt bigintmath::BigIntFromString(const std::string& n) {
 
 BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
   BigInt result;
+  unsigned int max = (a.size > b.size) ? a.size : b.size;
+
+  result.digits.resize(max, 0);
+  
+  uint8_t carry = 0;
+  
+  for (unsigned int i = 0; i < max; i++) {
+    uint8_t sum = a[i] + b[i] + carry;
+    result[i] = sum % 10;
+    carry = sum / 10;
+  }
+
   return result;
 }
