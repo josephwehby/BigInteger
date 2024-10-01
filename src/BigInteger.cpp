@@ -12,6 +12,16 @@ std::ostream& operator<<(std::ostream& os, const BigInt& a) {
   return os;
 }
 
+namespace {
+  BigInt BigIntInit(unsigned int size) {
+    BigInt bigint;
+    bigint.digits.resize(size);
+    bigint.isNegative = false;
+    bigint.size = static_cast<uint32_t>(size);
+    return bigint;
+  }
+}
+
 BigInt bigintmath::BigIntFromInt(int n) {
   BigInt bigint;
 
@@ -65,7 +75,6 @@ BigInt bigintmath::BigIntFromString(const std::string& n) {
 
 
 BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
-  BigInt result;
   const BigInt* min;
   const BigInt* max;
 
@@ -77,8 +86,8 @@ BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
     max = &a;
   }
 
-  result.digits.resize(max->size, 0);
-  
+  BigInt result = BigIntInit(max->size);
+
   uint8_t carry = 0;
   uint8_t sum = 0;  
 
