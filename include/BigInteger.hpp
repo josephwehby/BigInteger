@@ -17,6 +17,8 @@ struct BigInt {
 namespace bigintmath {
   BigInt BigIntFromString(const std::string&);
   BigInt BigIntFromInt(int);
+  int Compare(const BigInt& a, const BigInt& b);
   BigInt Add(const BigInt& a, const BigInt& b);
   BigInt Subtract(const BigInt& a, const BigInt& b);
+
 }

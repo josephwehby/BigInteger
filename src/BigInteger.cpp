@@ -138,6 +138,26 @@ BigInt bigintmath::BigIntFromString(const std::string& n) {
 }
 
 
+// returns 1 if a is greater and -1 if b is
+int bigintmath::Compare(const BigInt& a, const BigInt& b) {
+  if (a.isNegative && !b.isNegative) return -1;
+  if (!a.isNegative && b.isNegative) return 1;
+
+  if (a.size != b.size) return (a.size > b.size) ? 1 : -1;
+  
+  int sign = (a.isNegative == false) ? 1 : -1;
+  for (unsigned int i = 0; i < a.size; i++) {
+    if (a.digits[i] > b.digits[i]) {
+      return 1*sign;
+    } else {
+      return -1*sign;
+    }
+  }
+
+  return 0;
+
+}
+
 BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
   if (a.isNegative == b.isNegative) {
     BigInt result = AddAbsolute(a, b);
