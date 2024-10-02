@@ -59,20 +59,20 @@ namespace {
     BigInt result = BigIntInit(a.size);
 
     uint8_t borrow = 0;
-    int minuend = 0;
+    int difference = 0;
 
     for (unsigned int i = 0; i < a.size; i++) {
       uint8_t min_digit = (i < b.size) ? b.digits[i] : 0;
       uint8_t max_digit = a.digits[i];
       
-      minuend = max_digit - min_digit - borrow;
-      if (minuend < 0) {
-        minuend += 10; 
+      difference = max_digit - min_digit - borrow;
+      if (difference < 0) {
+        difference += 10; 
         borrow = 1;
       } else {
         borrow = 0;
       }
-      result.digits[i] = static_cast<uint8_t>(minuend);
+      result.digits[i] = static_cast<uint8_t>(difference);
     }
     
     while (result.size > 1 && result.digits.back() == 0) {
