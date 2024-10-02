@@ -1,5 +1,6 @@
 #include "BigInteger.hpp"
 
+// overload the << opertor to print the biginteger
 std::ostream& operator<<(std::ostream& os, const BigInt& a) {
   if (a.isNegative) {
     os << '-';
@@ -12,7 +13,10 @@ std::ostream& operator<<(std::ostream& os, const BigInt& a) {
   return os;
 }
 
+
+// anonymous namespace functions
 namespace {
+  
   BigInt BigIntInit(unsigned int size) {
     BigInt bigint;
     bigint.digits.resize(size);
@@ -20,8 +24,68 @@ namespace {
     bigint.size = static_cast<uint32_t>(size);
     return bigint;
   }
+
+  BigInt AddAbsolute(const BigInt& a, const BigInt& b) {
+    const BigInt* min;
+    const BigInt* max;
+
+    if (a.size < b.size) {
+      min = &a;
+      max = &b;
+    } else {
+      min = &b;
+      max = &a;
+    }
+
+    BigInt result = BigIntInit(max->size);
+
+    uint8_t carry = 0;
+    uint8_t sum = 0;  
+
+    for (unsigned int i = 0; i < max->size; i++) {
+      uint8_t min_digit = (i < min->size) ? min->digits[i] : 0;
+      uint8_t max_digit = max->digits[i];
+      sum = min_digit + max_digit + carry;
+      result.digits[i] = sum % 10;
+      carry = sum / 10;
+    }
+
+    if (carry > 0) result.digits.push_back(carry);
+
+    return result;
+  }
+
+  BigInt SubtractAbsolute(const BigInt& a, const BigInt& b) {
+    BigInt result = BigIntInit(a.size);
+
+    uint8_t borrow = 0;
+    int minuend = 0;
+
+    for (unsigned int i = 0; i < a.size; i++) {
+      uint8_t min_digit = (i < b.size) ? b.digits[i] : 0;
+      uint8_t max_digit = a.digits[i];
+      
+      minuend = max_digit - min_digit - borrow;
+      if (minuend < 0) {
+        minuend += 10; 
+        borrow = 1;
+      } else {
+        borrow = 0;
+      }
+      result.digits[i] = static_cast<uint8_t>(minuend);
+    }
+    
+    while (result.size > 1 && result.digits.back() == 0) {
+      result.digits.pop_back();
+      result.size--;
+    }
+
+    return result;
+  }
+
 }
 
+// all the bigintmath namespace functions
 BigInt bigintmath::BigIntFromInt(int n) {
   BigInt bigint;
 
@@ -75,35 +139,19 @@ BigInt bigintmath::BigIntFromString(const std::string& n) {
 
 
 BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
-  const BigInt* min;
-  const BigInt* max;
-
-  if (a.size < b.size) {
-    min = &a;
-    max = &b;
-  } else {
-    min = &b;
-    max = &a;
+  if (a.isNegative == b.isNegative) {
+    BigInt result = AddAbsolute(a, b);
+    result.isNegative = a.isNegative;
+    return result;
   }
 
-  BigInt result = BigIntInit(max->size);
+  BigInt r;
+  return r;
 
-  uint8_t carry = 0;
-  uint8_t sum = 0;  
+}
 
-  for (unsigned int i = 0; i < min->size; i++) {
-    sum = min->digits[i] + max->digits[i] + carry;
-    result.digits[i] = sum % 10;
-    carry = sum / 10;
-  }
-
-  for (unsigned int j = min->size; j < max->size; j++) {
-    sum = max->digits[j] + carry;
-    result.digits[j] = sum % 10;
-    carry = sum / 10; 
-  }
-
-  if (carry > 0) result.digits.push_back(carry);
-
-  return result;
+// a - b
+BigInt bigintmath::Subtract(const BigInt& a, const BigInt& b) {
+  BigInt r = SubtractAbsolute(a, b);
+  return r;
 }
