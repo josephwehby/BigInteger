@@ -83,6 +83,18 @@ namespace {
     return result;
   }
 
+  int CompareAbsolute(const BigInt& a, const BigInt& b) {
+    if (a.size > b.size) return 1;
+    if (a.size < b.size) return -1;
+
+    for (unsigned int i = 0; i < a.size; i++) {
+      if (a.digits[i] > b.digits[i]) return 1;
+      if (a.digits[i] < b.digits[i]) return -1;
+    }
+
+    return 0;
+  }
+
 }
 
 // all the bigintmath namespace functions
@@ -147,11 +159,8 @@ int bigintmath::Compare(const BigInt& a, const BigInt& b) {
   
   int sign = (a.isNegative == false) ? 1 : -1;
   for (unsigned int i = 0; i < a.size; i++) {
-    if (a.digits[i] > b.digits[i]) {
-      return 1*sign;
-    } else {
-      return -1*sign;
-    }
+    if (a.digits[i] > b.digits[i]) return 1*sign;
+    if (a.digits[i] < b.digits[i]) return -1*sign;
   }
 
   return 0;
@@ -164,10 +173,24 @@ BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
     result.isNegative = a.isNegative;
     return result;
   }
+  
+  // adding bigger positive with smaller negative - subtraction
+  int compare = CompareAbsolute(a, b);
+  
+  BigInt result;
+  if (compare == 1) {
+    // a is bigger than b
+    result = SubtractAbsolute(a, b);
+    result.isNegative = a.isNegative;
+  } else if (compare == -1) {
+    result = SubtractAbsolute(b, a);
+    result.isNegative = b.isNegative;
+  } else {
+    result = Subtract(a, b);
+    result.isNegative = false;
+  }
 
-  BigInt r;
-  return r;
-
+  return result;
 }
 
 // a - b
