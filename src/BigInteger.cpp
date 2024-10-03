@@ -168,8 +168,9 @@ int bigintmath::Compare(const BigInt& a, const BigInt& b) {
 }
 
 BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
+  BigInt result;
   if (a.isNegative == b.isNegative) {
-    BigInt result = AddAbsolute(a, b);
+    result = AddAbsolute(a, b);
     result.isNegative = a.isNegative;
     return result;
   }
@@ -177,7 +178,6 @@ BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
   // adding bigger positive with smaller negative - subtraction
   int compare = CompareAbsolute(a, b);
   
-  BigInt result;
   if (compare == 1) {
     // a is bigger than b
     result = SubtractAbsolute(a, b);
@@ -195,6 +195,11 @@ BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
 
 // a - b
 BigInt bigintmath::Subtract(const BigInt& a, const BigInt& b) {
+  BigInt result;
   BigInt r = SubtractAbsolute(a, b);
+
+  if (!a.isNegative && !b.isNegative) {
+
+  }
   return r;
 }
