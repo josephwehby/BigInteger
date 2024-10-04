@@ -196,10 +196,27 @@ BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
 // a - b
 BigInt bigintmath::Subtract(const BigInt& a, const BigInt& b) {
   BigInt result;
-  BigInt r = SubtractAbsolute(a, b);
 
   if (!a.isNegative && !b.isNegative) {
-
+    int compare = CompareAbsolute(a, b);
+    if (compare == 1 || compare == 0) {
+      result = SubtractAbsolute(a, b);
+      result.isNegative = false;
+    } else {
+      result = SubtractAbsolute(b, a);
+      result.isNegative = true;
+    }
+  } else if (a.isNegative && b.isNegative) {
+    int compare = CompareAbsolute(a, b);
+    if (compare == 1) {
+      result = SubtractAbsolute(a, b);
+      result.isNegative = true;
+    } else {
+      result = SubtractAbsolute(b, a);
+      result.isNegative = false;
+    }
+  } else {
+    // 
   }
-  return r;
+  return result;
 }
