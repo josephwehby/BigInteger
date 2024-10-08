@@ -5,11 +5,11 @@ std::ostream& operator<<(std::ostream& os, const BigInt& a) {
   if (a.isNegative) {
     os << '-';
   }
-
+  
   for (auto it = a.digits.rbegin(); it != a.digits.rend(); it++) {
     os << static_cast<char>(*it+'0');
   }
-
+  
   return os;
 }
 
@@ -19,7 +19,7 @@ namespace {
   
   BigInt BigIntInit(unsigned int size) {
     BigInt bigint;
-    bigint.digits.resize(size);
+    bigint.digits.resize(size, 0);
     bigint.isNegative = false;
     bigint.size = static_cast<uint32_t>(size);
     return bigint;
@@ -87,7 +87,7 @@ namespace {
     if (a.size > b.size) return 1;
     if (a.size < b.size) return -1;
 
-    for (unsigned int i = 0; i < a.size; i++) {
+    for (unsigned int i = a.size-1; i >= 0; i--) {
       if (a.digits[i] > b.digits[i]) return 1;
       if (a.digits[i] < b.digits[i]) return -1;
     }
@@ -158,7 +158,7 @@ int bigintmath::Compare(const BigInt& a, const BigInt& b) {
   if (a.size != b.size) return (a.size > b.size) ? 1 : -1;
   
   int sign = (a.isNegative == false) ? 1 : -1;
-  for (unsigned int i = 0; i < a.size; i++) {
+  for (unsigned int i = a.size-1; i >= 0; i--) {
     if (a.digits[i] > b.digits[i]) return 1*sign;
     if (a.digits[i] < b.digits[i]) return -1*sign;
   }
@@ -224,5 +224,46 @@ BigInt bigintmath::Subtract(const BigInt& a, const BigInt& b) {
       result.isNegative = false;
     }
   }
+  return result;
+}
+
+BigInt bigintmath::Multiply(const BigInt& a, const BigInt& b) {
+ 
+  BigInt result = BigIntInit(a.size + b.size);
+  
+  if (a.isNegative && b.isNegative) {
+    result.isNegative = false;
+  } else if (!a.isNegative && !b.isNegative) {
+    result.isNegative = false;
+  } else {
+    result.isNegative = true;
+  }
+
+  const BigInt* max;
+  const BigInt* min;
+
+  if (CompareAbsolute(a, b) == 1) {
+    max = &a;
+    min = &b;
+  } else {
+    max = &b;
+    min = &a;
+  }
+
+  for (unsigned int i = 0; i < min->size; i++) {
+    uint8_t carry = 0;
+    for (unsigned int j = 0; j < max->size; j++) { 
+      uint16_t product = (min->digits[i] * max->digits[j]) + carry + result.digits[i+j];
+      carry = product / 10;
+      result.digits[i+j] = product % 10;
+    }
+    result.digits[i+max->size] += carry;  
+  }
+  
+  while (result.size > 1 && result.digits.back() == 0) {
+    result.digits.pop_back();
+    result.size--;
+  }
+
   return result;
 }

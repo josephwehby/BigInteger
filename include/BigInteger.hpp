@@ -20,5 +20,5 @@ namespace bigintmath {
   int Compare(const BigInt& a, const BigInt& b);
   BigInt Add(const BigInt& a, const BigInt& b);
   BigInt Subtract(const BigInt& a, const BigInt& b);
-
+  BigInt Multiply(const BigInt& a, const BigInt& b);
 }
