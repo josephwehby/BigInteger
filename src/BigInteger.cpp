@@ -216,7 +216,13 @@ BigInt bigintmath::Subtract(const BigInt& a, const BigInt& b) {
       result.isNegative = false;
     }
   } else {
-    // 
+    if (a.isNegative && !b.isNegative) {
+      result = AddAbsolute(a, b);
+      result.isNegative = true;
+    } else {
+      result = AddAbsolute(a, b);
+      result.isNegative = false;
+    }
   }
   return result;
 }
