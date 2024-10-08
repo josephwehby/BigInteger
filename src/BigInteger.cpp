@@ -267,3 +267,7 @@ BigInt bigintmath::Multiply(const BigInt& a, const BigInt& b) {
 
   return result;
 }
+
+BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
+  
+}

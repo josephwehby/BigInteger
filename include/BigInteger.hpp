@@ -21,4 +21,5 @@ namespace bigintmath {
   BigInt Add(const BigInt& a, const BigInt& b);
   BigInt Subtract(const BigInt& a, const BigInt& b);
   BigInt Multiply(const BigInt& a, const BigInt& b);
+  BigInt Divide(const BigInt& a, const BigInt& b);
 }
