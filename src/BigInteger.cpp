@@ -301,3 +301,35 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
   result.isNegative = sign;
   return result;
 }
+
+BigInt bigintmath::Pow(const BigInt& a, unsigned int power) {
+  BigInt result;
+  bool sign = false;
+  
+  if (power == 0) {
+    result = BigIntInit(1);
+    result.digits[0] = 1;
+    result.isNegative = a.isNegative;
+    return result;
+  }
+  
+  if (power == 1) {
+    result = a;
+    return result;
+  }
+
+  if (power%2 != 0 && a.isNegative) {
+    sign = true;
+  }
+
+  unsigned int round = 1;
+  result = a;
+
+  while (round < power) {
+    result = Multiply(result, a);
+    round++;
+  }
+  
+  result.isNegative = sign;
+  return result;
+}

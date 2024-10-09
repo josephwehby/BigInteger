@@ -22,4 +22,6 @@ namespace bigintmath {
   BigInt Subtract(const BigInt& a, const BigInt& b);
   BigInt Multiply(const BigInt& a, const BigInt& b);
   BigInt Divide(const BigInt& a, const BigInt& b);
+  BigInt Mod(const BigInt& a, const BigInt&b);
+  BigInt Pow(const BigInt& a, unsigned int power);
 }
