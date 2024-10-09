@@ -302,6 +302,10 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
   return result;
 }
 
+BigInt bigintmath::Mod(const BigInt& a, const BigInt& b){
+  
+}
+
 BigInt bigintmath::Pow(const BigInt& a, unsigned int power) {
   BigInt result;
   bool sign = false;

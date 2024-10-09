@@ -11,7 +11,7 @@ int main() {
   
   std::cout << "A*B = " << bigintmath::Multiply(a, b) << std::endl;
   std::cout << "A/B = " << bigintmath::Divide(a, b) << std::endl;
-  std::cout << "A^4 = " << bigintmath::Pow(a, 32) << std::endl;
+  std::cout << "A^32 = " << bigintmath::Pow(a, 32) << std::endl;
  
   return 0;
 }
