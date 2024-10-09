@@ -266,6 +266,11 @@ BigInt bigintmath::Multiply(const BigInt& a, const BigInt& b) {
 
 // integer division
 BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
+  
+  if (b.size == 1 && b.digits[0] == 0) {
+    throw std::invalid_argument("Cannot divide by 0");
+  }
+
   BigInt result;
   int compare = CompareAbsolute(a, b); 
   bool sign = a.isNegative ^ b.isNegative;
@@ -283,7 +288,16 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
     default:
       break;
   }
+  
+  BigInt d = a;
+  int r = 0;
 
-  // repeated subtraction
+  while (CompareAbsolute(d, b) >= 0) {
+    d = SubtractAbsolute(d, b);
+    r++;
+  }
+
+  result = BigIntFromInt(r);
+  result.isNegative = sign;
   return result;
 }
