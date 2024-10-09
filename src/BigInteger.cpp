@@ -86,8 +86,8 @@ namespace {
   int CompareAbsolute(const BigInt& a, const BigInt& b) {
     if (a.size > b.size) return 1;
     if (a.size < b.size) return -1;
-
-    for (unsigned int i = a.size-1; i >= 0; i--) {
+    
+    for (int i = static_cast<int>(a.size)-1; i >= 0; i--) {
       if (a.digits[i] > b.digits[i]) return 1;
       if (a.digits[i] < b.digits[i]) return -1;
     }
@@ -158,7 +158,7 @@ int bigintmath::Compare(const BigInt& a, const BigInt& b) {
   if (a.size != b.size) return (a.size > b.size) ? 1 : -1;
   
   int sign = (a.isNegative == false) ? 1 : -1;
-  for (unsigned int i = a.size-1; i >= 0; i--) {
+  for (int i = static_cast<int>(a.size)-1; i >= 0; i--) {
     if (a.digits[i] > b.digits[i]) return 1*sign;
     if (a.digits[i] < b.digits[i]) return -1*sign;
   }
@@ -231,14 +231,10 @@ BigInt bigintmath::Multiply(const BigInt& a, const BigInt& b) {
  
   BigInt result = BigIntInit(a.size + b.size);
   
-  if (a.isNegative && b.isNegative) {
-    result.isNegative = false;
-  } else if (!a.isNegative && !b.isNegative) {
-    result.isNegative = false;
-  } else {
-    result.isNegative = true;
-  }
 
+  bool sign = a.isNegative ^ b.isNegative;
+  result.isNegative = sign;
+  
   const BigInt* max;
   const BigInt* min;
 
@@ -249,7 +245,7 @@ BigInt bigintmath::Multiply(const BigInt& a, const BigInt& b) {
     max = &b;
     min = &a;
   }
-
+  
   for (unsigned int i = 0; i < min->size; i++) {
     uint8_t carry = 0;
     for (unsigned int j = 0; j < max->size; j++) { 
@@ -268,6 +264,26 @@ BigInt bigintmath::Multiply(const BigInt& a, const BigInt& b) {
   return result;
 }
 
+// integer division
 BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
-  
+  BigInt result;
+  int compare = CompareAbsolute(a, b); 
+  bool sign = a.isNegative ^ b.isNegative;
+
+  switch (compare) {
+    case 0:
+      result = BigIntInit(1);
+      result.digits[0] = 1;
+      result.isNegative = sign;
+      return result;
+    case -1:
+      result = BigIntInit(1);
+      result.isNegative = sign;
+      return result;
+    default:
+      break;
+  }
+
+  // repeated subtraction
+  return result;
 }
