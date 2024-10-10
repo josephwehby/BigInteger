@@ -304,6 +304,9 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
 
 BigInt bigintmath::Mod(const BigInt& a, const BigInt& b){
   BigInt result;
+  if (b.isNegative || a.isNegative) {
+    throw std::invalid_argument("Negative mods not currently supported");
+  }
   if (b.size == 1 && b.digits[0] == 0) {
     throw std::invalid_argument("Cannot divide by 0");
   }
@@ -337,6 +340,7 @@ BigInt bigintmath::Mod(const BigInt& a, const BigInt& b){
   return result;
 }
 
+// possibly use std::vairant so we can take an unsigned int or BigInt as the power
 BigInt bigintmath::Pow(const BigInt& a, unsigned int power) {
   BigInt result;
   bool sign = false;
