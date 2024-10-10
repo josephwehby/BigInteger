@@ -303,7 +303,38 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
 }
 
 BigInt bigintmath::Mod(const BigInt& a, const BigInt& b){
-  
+  BigInt result;
+  if (b.size == 1 && b.digits[0] == 0) {
+    throw std::invalid_argument("Cannot divide by 0");
+  }
+
+  if (a.size == 1 && a.digits[0] == 0) {
+    result = a;
+    return result;
+  }
+
+  int compare = CompareAbsolute(a, b);
+  switch(compare) {
+    case 0:
+      result = BigIntInit(1);
+      result.digits[0] = 0;
+      return result;
+    case -1:
+      result = a;
+      return a;
+    default:
+      break;
+  }
+
+  // division but only care about remainder
+  BigInt d = a;
+   
+  while (CompareAbsolute(d, b) >= 0) {
+    d = SubtractAbsolute(d, b);
+  }
+
+  result = d;
+  return result;
 }
 
 BigInt bigintmath::Pow(const BigInt& a, unsigned int power) {
