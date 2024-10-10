@@ -84,6 +84,8 @@ namespace {
   }
 
   int CompareAbsolute(const BigInt& a, const BigInt& b) {
+    std::cout << a << " " << b << std::endl;
+    std::cout << a.size <<  " " << b.size << std::endl; 
     if (a.size > b.size) return 1;
     if (a.size < b.size) return -1;
     
@@ -149,7 +151,6 @@ BigInt bigintmath::BigIntFromString(const std::string& n) {
   return bigint;
 }
 
-
 // returns 1 if a is greater and -1 if b is
 int bigintmath::Compare(const BigInt& a, const BigInt& b) {
   if (a.isNegative && !b.isNegative) return -1;
@@ -164,7 +165,27 @@ int bigintmath::Compare(const BigInt& a, const BigInt& b) {
   }
 
   return 0;
+}
 
+bool bigintmath::isZero(const BigInt& a) {
+  if (a.size > 1) return false;
+  if (a.digits[0] != 0) return false;
+
+  return true;
+}
+
+bool bigintmath::isEven(const BigInt& a) {
+  BigInt two = BigIntFromInt(2);
+  BigInt mod = Mod(a, two);
+  return isZero(mod);
+}
+
+bool bigintmath::gtZero(const BigInt& a) {
+  if (a.isNegative) return false;
+  if(a.size > 1) return true;
+  if (a.digits[0] == 0) return false; 
+
+  return true;
 }
 
 BigInt bigintmath::Add(const BigInt& a, const BigInt& b) {
@@ -282,6 +303,7 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
       result.isNegative = sign;
       return result;
     case -1:
+      std::cout << "here" << std::endl;
       result = BigIntInit(1);
       result.isNegative = sign;
       return result;
@@ -296,7 +318,7 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
     d = SubtractAbsolute(d, b);
     r++;
   }
-
+  std::cout << "DIVIDE " << r << std::endl;
   result = BigIntFromInt(r);
   result.isNegative = sign;
   return result;
@@ -370,5 +392,33 @@ BigInt bigintmath::Pow(const BigInt& a, unsigned int power) {
   }
   
   result.isNegative = sign;
+  return result;
+}
+
+// a^b mod c
+BigInt bigintmath::ModPow(const BigInt& a, const BigInt& b, const BigInt& c) {
+  BigInt result = BigIntInit(1);
+  result.digits[0] = 1;
+
+  BigInt two = BigIntFromInt(2);
+  BigInt base = a;
+  BigInt power = b;
+  BigInt mod = c;
+
+  
+  base = Mod(base, mod);
+  while (gtZero(power)) {
+    std::cout << "Base: " << base << ", Power: " << power << ", Result: " << result << std::endl;
+    if (!isEven(power)) {
+      result = Mod(Multiply(result, base), mod);
+    }
+
+    std::cout << power << std::endl;
+    power = Divide(power, two);
+    std::cout << "Power " << power << std::endl;
+    base = Mod(Pow(base, 2), mod);
+    std::cout << "Base after squaring " << base << std::endl;
+  }
+
   return result;
 }
