@@ -14,7 +14,8 @@ std::pair<std::string,std::string> generate_digits(int length) {
   for (int i = 0; i < length; i++) n1 += std::to_string(dist(gen));
 
   n2 += std::to_string(dist(gen)%9 + 1);
-  for (int i = 0; i < length; i++) n2 += std::to_string(dist(gen));
+  n2 += std::to_string(dist(gen)%9);
+  n2 += std::to_string(dist(gen)%9);
 
   return {n1, n2};
 }
@@ -28,7 +29,7 @@ long long benchmark(int l) {
 
   auto start = std::chrono::high_resolution_clock::now();
   
-  BigInt result = bigintmath::Multiply(a, b);
+  BigInt result = bigintmath::Divide(a, b);
   auto stop = std::chrono::high_resolution_clock::now();
   
   auto duration = duration_cast<std::chrono::milliseconds>(stop-start);
@@ -36,21 +37,21 @@ long long benchmark(int l) {
   return duration.count();
 }
 
-
 int main() {
   
-  int digits = 1000;
+  int digits = 10;
   
-  while (digits <= 6000) {
+  while (digits <= 10) {
     long long average = 0;
     
 
     for (int i = 0; i < 10; i++) {
       average += benchmark(digits);
+      std::cout << average << std::endl;
     }
 
     std::cout << digits << " " << average / 10 << std::endl;
-    digits += 50;
+    digits += 10;
   }
 
 }

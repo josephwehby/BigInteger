@@ -8,7 +8,7 @@ set(EXECUTABLE_OUTPUT_PATH "bin")
 
 # add src files
 set(MAIN_SRC_FILES src/main.cpp src/BigInteger.cpp)
-set(BM_SRC_FILES src/Benchmark.cpp src/BigInteger.cpp)
+set(BM_SRC_FILES graph/Benchmark.cpp src/BigInteger.cpp)
 
 #add header files
 include_directories(
