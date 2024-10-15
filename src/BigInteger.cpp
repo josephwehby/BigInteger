@@ -415,3 +415,20 @@ BigInt bigintmath::ModPow(const BigInt& a, const BigInt& b, const BigInt& c) {
 
   return result;
 }
+
+BigInt bigintmath::RightShift(const BigInt& a) {
+  // a right shift is the same as dividing by 2
+  BigInt result = BigIntInit(a.size);
+  
+  int carry = 0;
+  for (int i = a.size-1; i >= 0; i--) {
+    int current = a.digits[i] + (carry * 10);
+    result.digits[i] = current/2;
+    carry = current%2;
+  }
+  
+  while (result.size >= 1 && result.digits.back() == 0) result.digits.pop_back();
+
+  return result;
+}
+
