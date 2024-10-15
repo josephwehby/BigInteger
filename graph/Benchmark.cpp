@@ -39,19 +39,18 @@ long long benchmark(int l) {
 
 int main() {
   
-  int digits = 10;
+  int digits = 1000;
   
-  while (digits <= 10) {
+  while (digits <= 3000) {
     long long average = 0;
     
 
     for (int i = 0; i < 10; i++) {
       average += benchmark(digits);
-      std::cout << average << std::endl;
     }
 
     std::cout << digits << " " << average / 10 << std::endl;
-    digits += 10;
+    digits += 50;
   }
 
 }
