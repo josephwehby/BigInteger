@@ -309,14 +309,30 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
       break;
   }
   
-  BigInt d = a;
-  int r = 0;
-
-  while (CompareAbsolute(d, b) >= 0) {
-    d = SubtractAbsolute(d, b);
-    r++;
+  if (b.size == 1 && b.digits[0] == 1) {
+    result = a;
+    result.isNegative = sign;
+    return result;
   }
-  result = BigIntFromInt(r);
+
+  BigInt left = BigIntFromInt(0);
+  BigInt right = a;
+  BigInt mid;
+  BigInt one = BigIntFromInt(1);
+
+  while (CompareAbsolute(left, right) <= 0) {
+    mid = RightShift(Subtract(right, left));
+    mid = Add(mid, left);
+    
+    if (CompareAbsolute(Multiply(mid, b), a) == 1) {
+      right = Subtract(mid, one);
+    } else {
+      result = mid;
+      left = Add(mid, one);
+    }
+
+  }
+
   result.isNegative = sign;
   return result;
 }
@@ -423,7 +439,7 @@ BigInt bigintmath::RightShift(const BigInt& a) {
   int carry = 0;
   for (int i = a.size-1; i >= 0; i--) {
     int current = a.digits[i] + (carry * 10);
-    result.digits[i] = current/2;
+    result.digits[i] = static_cast<uint8_t>(current>>1);
     carry = current%2;
   }
   
