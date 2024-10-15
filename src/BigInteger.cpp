@@ -50,7 +50,14 @@ namespace {
       carry = sum / 10;
     }
 
-    if (carry > 0) result.digits.push_back(carry);
+    if (carry > 0) {
+      result.digits.push_back(carry);
+      result.size++;
+    }
+    while (result.size > 1 && result.digits.back() == 0) {
+      result.digits.pop_back();
+      result.size--;
+    }
 
     return result;
   }
@@ -58,7 +65,7 @@ namespace {
   BigInt SubtractAbsolute(const BigInt& a, const BigInt& b) {
     BigInt result = BigIntInit(a.size);
 
-    uint8_t borrow = 0;
+    int borrow = 0;
     int difference = 0;
 
     for (unsigned int i = 0; i < a.size; i++) {
@@ -79,7 +86,6 @@ namespace {
       result.digits.pop_back();
       result.size--;
     }
-
     return result;
   }
 
@@ -219,7 +225,7 @@ BigInt bigintmath::Subtract(const BigInt& a, const BigInt& b) {
 
   if (!a.isNegative && !b.isNegative) {
     int compare = CompareAbsolute(a, b);
-    if (compare == 1 || compare == 0) {
+    if (compare >= 0) {
       result = SubtractAbsolute(a, b);
       result.isNegative = false;
     } else {
@@ -321,22 +327,29 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
   BigInt one = BigIntFromInt(1);
 
   while (CompareAbsolute(left, right) <= 0) {
-    mid = RightShift(Subtract(right, left));
-    mid = Add(mid, left);
-    
-    if (CompareAbsolute(Multiply(mid, b), a) == 1) {
-      right = Subtract(mid, one);
+    mid = SubtractAbsolute(right, left);
+    mid = RightShift(mid);
+    mid = AddAbsolute(mid, left);
+
+    BigInt product = Multiply(mid, b);
+    if (CompareAbsolute(product, a) == 1) {
+      right = SubtractAbsolute(mid, one);
     } else {
       result = mid;
-      left = Add(mid, one);
+      left = AddAbsolute(mid, one);
     }
 
   }
-
+  
+  while (result.size > 1 && result.digits.back() == 0) {
+    result.digits.pop_back();
+    result.size--;
+  }
   result.isNegative = sign;
   return result;
 }
 
+// mod = a - Div(a, b) * b
 BigInt bigintmath::Mod(const BigInt& a, const BigInt& b){
   BigInt result;
   if (b.isNegative || a.isNegative) {
@@ -351,6 +364,12 @@ BigInt bigintmath::Mod(const BigInt& a, const BigInt& b){
     return result;
   }
 
+  if (b.size == 1 && a.digits[0] == 1) {
+    result = BigIntInit(1);
+    result.digits[0] = 1;
+    return result;
+  }
+  
   int compare = CompareAbsolute(a, b);
   switch(compare) {
     case 0:
@@ -363,15 +382,9 @@ BigInt bigintmath::Mod(const BigInt& a, const BigInt& b){
     default:
       break;
   }
-
-  // division but only care about remainder
-  BigInt d = a;
-   
-  while (CompareAbsolute(d, b) >= 0) {
-    d = SubtractAbsolute(d, b);
-  }
-
-  result = d;
+  
+  BigInt quotient = Divide(a, b);
+  result = Subtract(a, Multiply(b, quotient));
   return result;
 }
 
@@ -425,7 +438,7 @@ BigInt bigintmath::ModPow(const BigInt& a, const BigInt& b, const BigInt& c) {
       result = Mod(Multiply(result, base), mod);
     }
 
-    power = Divide(power, two);
+    power = RightShift(power);
     base = Mod(Pow(base, 2), mod);
   }
 
@@ -443,8 +456,10 @@ BigInt bigintmath::RightShift(const BigInt& a) {
     carry = current%2;
   }
   
-  while (result.size >= 1 && result.digits.back() == 0) result.digits.pop_back();
-
+  while (result.size > 1 && result.digits.back() == 0) {
+    result.digits.pop_back();
+    result.size--;
+  }
   return result;
 }
 

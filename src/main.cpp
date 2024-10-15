@@ -3,18 +3,15 @@
 
 int main() {
   
-  BigInt a = bigintmath::BigIntFromString("123456789012345678901234567890");
+  BigInt a = bigintmath::BigIntFromString("1234567899999999999190323423423434324234111");
   std::cout << "A: " << a << std::endl;
   
-  BigInt b = bigintmath::BigIntFromString("2");
+  BigInt b = bigintmath::BigIntFromString("12345678901234567890");
+  //BigInt b = bigintmath::BigIntFromString("100");
   std::cout << "B: " << b << std::endl;
 
-  BigInt c = bigintmath::BigIntFromString("2");
-  std::cout << "C: " << c << std::endl;
-  
-  std::cout << bigintmath::RightShift(a) << std::endl;
-  std::cout << "A*B = " << bigintmath::Multiply(a, b) << std::endl;
   std::cout << "A/B = " << bigintmath::Divide(a, b) << std::endl;
- 
+  //std::cout << "A%B = " << bigintmath::Mod(a, b) << std::endl;
+  //std::cout << "A^B mod C = " << bigintmath::ModPow(a, b, c) << std::endl;
   return 0;
 }
