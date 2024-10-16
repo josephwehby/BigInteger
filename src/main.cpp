@@ -12,6 +12,8 @@ int main() {
   BigInt c = bigintmath::BigIntFromString("78956432345234523");
   std::cout << "C: " << c << std::endl;
 
+  std::cout << "A+B = " << bigintmath::Add(a, b) << std::endl;
+  std::cout << "A-B = " << bigintmath::Subtract(a, b) << std::endl;
   std::cout << "A/B = " << bigintmath::Divide(a, b) << std::endl;
   std::cout << "A%B = " << bigintmath::Mod(a, b) << std::endl;
   std::cout << "A^B mod C  = " << bigintmath::ModPow(a, b, c) << std::endl;

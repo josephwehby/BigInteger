@@ -24,6 +24,13 @@ namespace {
     bigint.size = static_cast<uint32_t>(size);
     return bigint;
   }
+  
+  void Cleanup(BigInt& a) {
+    while (a.size > 1 && a.digits.back() == 0) {
+      a.digits.pop_back();
+      a.size--;
+    } 
+  }
 
   BigInt AddAbsolute(const BigInt& a, const BigInt& b) {
     const BigInt* min;
@@ -54,10 +61,8 @@ namespace {
       result.digits.push_back(carry);
       result.size++;
     }
-    while (result.size > 1 && result.digits.back() == 0) {
-      result.digits.pop_back();
-      result.size--;
-    }
+    
+    Cleanup(result);
 
     return result;
   }
@@ -81,11 +86,9 @@ namespace {
       }
       result.digits[i] = static_cast<uint8_t>(difference);
     }
+
+    Cleanup(result);
     
-    while (result.size > 1 && result.digits.back() == 0) {
-      result.digits.pop_back();
-      result.size--;
-    }
     return result;
   }
 
@@ -284,11 +287,8 @@ BigInt bigintmath::Multiply(const BigInt& a, const BigInt& b) {
     }
     result.digits[i+max->size] += carry;  
   }
-  
-  while (result.size > 1 && result.digits.back() == 0) {
-    result.digits.pop_back();
-    result.size--;
-  }
+
+  Cleanup(result);
 
   return result;
 }
@@ -342,11 +342,9 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
     }
 
   }
-  
-  while (result.size > 1 && result.digits.back() == 0) {
-    result.digits.pop_back();
-    result.size--;
-  }
+
+  Cleanup(result);
+
   result.isNegative = sign;
   return result;
 }
@@ -456,11 +454,9 @@ BigInt bigintmath::RightShift(const BigInt& a) {
     result.digits[i] = static_cast<uint8_t>(current>>1);
     carry = current%2;
   }
-  
-  while (result.size > 1 && result.digits.back() == 0) {
-    result.digits.pop_back();
-    result.size--;
-  }
+
+  Cleanup(result);
+
   return result;
 }
 
