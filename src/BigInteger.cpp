@@ -180,9 +180,12 @@ bool bigintmath::isZero(const BigInt& a) {
 }
 
 bool bigintmath::isEven(const BigInt& a) {
-  BigInt two = BigIntFromInt(2);
-  BigInt mod = Mod(a, two);
-  return isZero(mod);
+  uint8_t digit = a.digits[0];
+  digit = digit & 1;
+
+  if (digit == 1) return false;
+
+  return true;
 }
 
 bool bigintmath::gtZero(const BigInt& a) {
@@ -327,8 +330,7 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
   BigInt one = BigIntFromInt(1);
 
   while (CompareAbsolute(left, right) <= 0) {
-    mid = SubtractAbsolute(right, left);
-    mid = RightShift(mid);
+    mid = RightShift(SubtractAbsolute(right, left));
     mid = AddAbsolute(mid, left);
 
     BigInt product = Multiply(mid, b);
@@ -426,7 +428,6 @@ BigInt bigintmath::ModPow(const BigInt& a, const BigInt& b, const BigInt& c) {
   BigInt result = BigIntInit(1);
   result.digits[0] = 1;
 
-  BigInt two = BigIntFromInt(2);
   BigInt base = a;
   BigInt power = b;
   BigInt mod = c;
