@@ -17,6 +17,7 @@ struct BigInt {
 namespace bigintmath {
   BigInt BigIntFromString(const std::string&);
   BigInt BigIntFromInt(int);
+  BigInt BigIntFromBytes(const std::vector<uint8_t>&);
   int Compare(const BigInt& a, const BigInt& b);
   bool isZero(const BigInt& a);
   bool isEven(const BigInt& a);

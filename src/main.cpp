@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "BigInteger.hpp"
 
 int main() {
@@ -11,6 +12,13 @@ int main() {
 
   BigInt c = bigintmath::BigIntFromString("78956432345234523");
   std::cout << "C: " << c << std::endl;
+  
+  std::vector<uint8_t> hello;
+  std::string text = "hello";
+  for (char c : text) hello.push_back(static_cast<uint8_t>(c));
+  
+  BigInt byte_to_num = bigintmath::BigIntFromBytes(hello);
+  std::cout << text << " : " << byte_to_num << std::endl;
 
   std::cout << "A+B = " << bigintmath::Add(a, b) << std::endl;
   std::cout << "A-B = " << bigintmath::Subtract(a, b) << std::endl;

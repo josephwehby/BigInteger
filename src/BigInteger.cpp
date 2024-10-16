@@ -159,6 +159,25 @@ BigInt bigintmath::BigIntFromString(const std::string& n) {
   return bigint;
 }
 
+// this will handle endianess by starting at end so user does not have to flip byte array
+BigInt bigintmath::BigIntFromBytes(const std::vector<uint8_t>& bytes) {
+  BigInt result = BigIntInit(0);
+  BigInt base = BigIntFromInt(1);
+  BigInt fixed_base = BigIntFromInt(256);
+
+  for (int i = bytes.size()-1; i >= 0; i--) {
+    
+    BigInt num = BigIntFromInt(static_cast<int>(bytes[i]));
+
+    BigInt mult = Multiply(num, base); 
+    result = AddAbsolute(mult, result);
+    base = Multiply(base, fixed_base);
+ 
+  }
+
+  return result;
+}
+
 // returns 1 if a is greater and -1 if b is
 int bigintmath::Compare(const BigInt& a, const BigInt& b) {
   if (a.isNegative && !b.isNegative) return -1;
