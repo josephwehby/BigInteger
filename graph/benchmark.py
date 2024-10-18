@@ -44,6 +44,6 @@ plt.title("Various BigInt Operations")
 plt.xlabel("Number of Digits and Length of Input")
 plt.ylabel("Time in Seconds")
 plt.legend();
-plt.show()
+#plt.show()
 
 plt.savefig("metrics.jpg", format="jpg")
