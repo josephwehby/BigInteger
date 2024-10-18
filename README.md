@@ -8,4 +8,4 @@ Represents integers that are not able to be stored in the traditional data types
   - For Multiplication it is the length of both A x B
   - For Division it is the length of A and B is just a small digit number
   - For Bytes to BigInt it is the length of the byte array
-![BigInt operations](graph/metrics.jpg)
+![BigInt operations](graph/metrics.png)

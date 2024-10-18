@@ -46,4 +46,4 @@ plt.ylabel("Time in Seconds")
 plt.legend();
 #plt.show()
 
-plt.savefig("metrics.jpg", format="jpg")
+plt.savefig("metrics.png")
