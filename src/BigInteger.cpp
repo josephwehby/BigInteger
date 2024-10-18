@@ -13,7 +13,6 @@ std::ostream& operator<<(std::ostream& os, const BigInt& a) {
   return os;
 }
 
-
 // anonymous namespace functions
 namespace {
   
