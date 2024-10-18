@@ -1,6 +1,14 @@
 # BigInteger
 Represents integers that are not able to be stored in the traditional data types
 
+# Example Usage
+
+```
+BigInt a = bigintmath::BigIntFromInt(100);
+BigInt b = bigintmath::BigIntFromString("1234");
+std::cout << bigintmath::Multiply(a, b) << std::endl;
+```
+
 # Metrics
 - Below is the time it takes to do a few of the operations in this BigInt library.
 - Division is by far the slowest and it is implemented as a binary search. The graph for Mod is the same.
