@@ -469,7 +469,7 @@ BigInt bigintmath::RightShift(const BigInt& a) {
   int carry = 0;
   for (int i = a.size-1; i >= 0; i--) {
     int current = a.digits[i] + (carry * 10);
-    result.digits[i] = static_cast<uint8_t>(current>>1);
+    result.digits[i] = static_cast<uint8_t>(current/2);
     carry = current%2;
   }
 
@@ -478,3 +478,23 @@ BigInt bigintmath::RightShift(const BigInt& a) {
   return result;
 }
 
+BigInt bigintmath::LeftShift(const BigInt& a) {
+  BigInt result = BigIntInit(a.size);
+
+  int carry = 0;
+
+  for (unsigned int i = 0; i < a.size; i++) {
+    int current = carry + (a.digits[i] * 2);
+    result.digits[i] = static_cast<uint8_t>(current%10);
+    carry = current/10;
+  }
+
+  if (carry > 0) {
+    result.digits.push_back(carry);
+    result.size++;
+  }
+
+  Cleanup(result);
+
+  return result;
+}

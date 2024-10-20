@@ -37,19 +37,17 @@ std::pair<std::string,std::string> generate_digits(int length) {
 
 long long benchmark(int l) {
   
-  /*
   auto nums = generate_digits(l);
   BigInt a = bigintmath::BigIntFromString(nums.first);
   BigInt b = bigintmath::BigIntFromString(nums.second);
-  */
 
-  auto letters = generate_bytes(l);
+  // auto letters = generate_bytes(l);
 
   auto start = std::chrono::high_resolution_clock::now();
   
-  //BigInt result = bigintmath::Divide(a, b);
+  BigInt result = bigintmath::Add(a, b);
 
-  BigInt number = bigintmath::BigIntFromBytes(letters);
+  //BigInt number = bigintmath::BigIntFromBytes(letters);
   
   auto stop = std::chrono::high_resolution_clock::now();
   
@@ -62,7 +60,7 @@ int main() {
   
   int digits = 1000;
   
-  while (digits <= 3000) {
+  while (digits <= 10000) {
     long long average = 0;
     
 

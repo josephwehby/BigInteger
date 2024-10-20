@@ -30,4 +30,5 @@ namespace bigintmath {
   BigInt Pow(const BigInt& a, unsigned int power);
   BigInt ModPow(const BigInt& a, const BigInt& b, const BigInt& c);
   BigInt RightShift(const BigInt& a);
+  BigInt LeftShift(const BigInt& a);
 }

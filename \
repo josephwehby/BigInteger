@@ -4,7 +4,7 @@
 
 int main() {
   
-  BigInt a = bigintmath::BigIntFromInt(1234567);
+  BigInt a = bigintmath::BigIntFromString("123456789");
   std::cout << "A: " << a << std::endl;
   
   BigInt b = bigintmath::BigIntFromString("12345");
