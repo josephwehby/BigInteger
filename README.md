@@ -17,3 +17,9 @@ std::cout << bigintmath::Multiply(a, b) << std::endl;
   - For Division it is the length of A and B is just a small digit number
   - For Bytes to BigInt it is the length of the byte array
 ![BigInt operations](graph/metrics.png)
+
+# Build
+- The repo contains a .so file in the `library` folder
+- To build the project, including the benchmark and example main file, run: 
+  - `cmake CMakeLists`
+  - `cmake --build .`
