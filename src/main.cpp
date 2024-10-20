@@ -7,7 +7,7 @@ int main() {
   BigInt a = bigintmath::BigIntFromInt(1234567);
   std::cout << "A: " << a << std::endl;
   
-  BigInt b = bigintmath::BigIntFromString("12345");
+  BigInt b = bigintmath::BigIntFromString("12");
   std::cout << "B: " << b << std::endl;
 
   BigInt c = bigintmath::BigIntFromString("78956432");
@@ -30,6 +30,7 @@ int main() {
   std::cout << "A^B mod C  = " << bigintmath::ModPow(a, b, c) << std::endl;
   std::cout << "A << 1  = " << bigintmath::LeftShift(a) << std::endl;
   std::cout << "A >> 1  = " << bigintmath::RightShift(a) << std::endl;
+  std::cout << "A ^ B  = " << bigintmath::Pow(a, b) << std::endl;
 
   return 0;
 }

@@ -200,6 +200,13 @@ bool bigintmath::isZero(const BigInt& a) {
   return true;
 }
 
+bool bigintmath::isOne(const BigInt& a) {
+  if (a.size > 1) return false;
+  if (a.digits[0] != 1) return false;
+
+  return true;
+}
+
 bool bigintmath::isEven(const BigInt& a) {
   uint8_t digit = a.digits[0];
   digit = digit & 1;
@@ -407,32 +414,33 @@ BigInt bigintmath::Mod(const BigInt& a, const BigInt& b){
 }
 
 // possibly use std::vairant so we can take an unsigned int or BigInt as the power
-BigInt bigintmath::Pow(const BigInt& a, unsigned int power) {
+BigInt bigintmath::Pow(const BigInt& a, const BigInt& power) {
   BigInt result;
   bool sign = false;
   
-  if (power == 0) {
+  if (isZero(power)) {
     result = BigIntInit(1);
     result.digits[0] = 1;
     result.isNegative = a.isNegative;
     return result;
   }
   
-  if (power == 1) {
+  if (isOne(power)) {
     result = a;
     return result;
   }
 
-  if (power%2 != 0 && a.isNegative) {
+  if (!isEven(power) && a.isNegative) {
     sign = true;
   }
 
-  unsigned int round = 1;
+  BigInt round = BigIntFromInt(1);
+  BigInt one = BigIntFromInt(1);
   result = a;
 
-  while (round < power) {
+  while (Compare(round, power) == -1) {
     result = Multiply(result, a);
-    round++;
+    round = AddAbsolute(round, one);
   }
   
   result.isNegative = sign;
@@ -442,6 +450,7 @@ BigInt bigintmath::Pow(const BigInt& a, unsigned int power) {
 // a^b mod c
 BigInt bigintmath::ModPow(const BigInt& a, const BigInt& b, const BigInt& c) {
   BigInt result = BigIntInit(1);
+  BigInt two = BigIntFromInt(2);
   result.digits[0] = 1;
 
   BigInt base = a;
@@ -456,7 +465,7 @@ BigInt bigintmath::ModPow(const BigInt& a, const BigInt& b, const BigInt& c) {
     }
 
     power = RightShift(power);
-    base = Mod(Pow(base, 2), mod);
+    base = Mod(Pow(base, two), mod);
   }
 
   return result;
