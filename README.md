@@ -21,5 +21,5 @@ std::cout << bigintmath::Multiply(a, b) << std::endl;
 # Build
 - The repo contains a .so file in the `library` folder
 - To build the project, including the benchmark and example main file, run: 
-  - `cmake CMakeLists`
+  - `cmake CMakeLists.txt`
   - `cmake --build .`
