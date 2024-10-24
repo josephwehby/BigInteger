@@ -1,9 +1,9 @@
 #include "BigInteger.hpp"
 
 BigInt::BigInt(int n) {
-
   if (n < 0) {
     isNegative = true;
+    n *= -1;
   } else {
     isNegative = false;
   }
@@ -45,7 +45,20 @@ BigInt::BigInt(const std::string& n) {
       throw std::invalid_argument("A character in the string is not a number.");
     }
   }
+}
 
+bool BigInt::operator>(const BigInt& b) const {
+  if (isNegative && !b.isNegative) return false;
+  if (!isNegative && b.isNegative) return true;
+
+  if (size != b.size) return (size > b.size) ? true : false;
+  
+  bool neg = sign || b.sign;
+  for (int i = static_cast<int>(size)-1; i >= 0; i--) {
+    if (digits[i] > b.digits[i]) return (true && neg);
+  }
+
+  return false;
 }
 
 // overload the << opertor to print the biginteger

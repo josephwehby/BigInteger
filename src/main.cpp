@@ -4,24 +4,22 @@
 
 int main() {
   
-  BigInt a = BigInt(1234567);
+  BigInt a = BigInt(-15);
   std::cout << "A: " << a << std::endl;
   
-  BigInt b = BigInt("12");
+  BigInt b = BigInt("-1634567");
   std::cout << "B: " << b << std::endl;
 
   BigInt c = BigInt("78956432");
   std::cout << "C: " << c << std::endl;
+
+  if (a > b) {
+    std::cout << "A is greater than B" << std::endl;
+  } else {
+    std::cout << "A is less than B" << std::endl;
+  }
   
   /*
-  std::vector<uint8_t> hello;
-  std::string text = "hello";
-  for (char c : text) hello.push_back(static_cast<uint8_t>(c));
-  
-  BigInt byte_to_num = BigInt(hello);
-  std::cout << text << " : " << byte_to_num << std::endl;
-  
-  std::cout << "A+B = " << bigintmath::Add(a, b) << std::endl;
   std::cout << "A-B = " << bigintmath::Subtract(a, b) << std::endl;
   std::cout << "A/B = " << bigintmath::Divide(a, b) << std::endl;
   std::cout << "A%B = " << bigintmath::Mod(a, b) << std::endl;
