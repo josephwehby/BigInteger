@@ -15,7 +15,6 @@ BigInt::BigInt(int n) {
     n = n/10;
     size++;
   }
- 
 }
 
 BigInt::BigInt(const std::string& n) {
@@ -47,18 +46,33 @@ BigInt::BigInt(const std::string& n) {
   }
 }
 
+
 bool BigInt::operator>(const BigInt& b) const {
   if (isNegative && !b.isNegative) return false;
   if (!isNegative && b.isNegative) return true;
 
-  if (size != b.size) return (size > b.size) ? true : false;
+  if (size != b.size) {
+    return isNegative ? (size < b.size) : (size > b.size);
+  }
   
-  bool neg = sign || b.sign;
   for (int i = static_cast<int>(size)-1; i >= 0; i--) {
-    if (digits[i] > b.digits[i]) return (true && neg);
+    if (digits[i] != b.digits[i]) {
+      return isNegative ? (digits[i] < b.digits[i]) : (digits[i] > b.digits[i]);
+    }
   }
 
   return false;
+}
+
+bool BigInt::operator==(const BigInt& b) const {
+  if (size != b.size) return false;
+  if(isNegative != b.isNegative) return false;
+
+  for (int i = static_cast<int>(size)-1; i >= 0; i--) {
+    if (digits[i] != b.digits[i]) return false;
+  }
+
+  return true;
 }
 
 // overload the << opertor to print the biginteger
