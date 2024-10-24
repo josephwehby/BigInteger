@@ -28,8 +28,8 @@ add_executable(main ${MAIN_SRC_FILES})
 add_executable(benchmark ${BM_SRC_FILES})
 
 # create library
-add_library(BigInteger SHARED ${BIGINT_SRC_FILES})
+#add_library(BigInteger SHARED ${BIGINT_SRC_FILES})
 
-set_target_properties(BigInteger PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${LIBRARY_OUTPUT_PATH}
-)
+#set_target_properties(BigInteger PROPERTIES
+#    LIBRARY_OUTPUT_DIRECTORY ${LIBRARY_OUTPUT_PATH}
+#)
