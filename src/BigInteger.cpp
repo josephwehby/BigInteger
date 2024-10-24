@@ -15,6 +15,11 @@ BigInt::BigInt(int n) {
     n = n/10;
     size++;
   }
+
+  if (n == 0) {
+    size++;
+    digits.push_back(n);
+  }
 }
 
 BigInt::BigInt(const std::string& n) {
@@ -46,6 +51,23 @@ BigInt::BigInt(const std::string& n) {
   }
 }
 
+bool BigInt::operator<(const BigInt& b) const {
+  if (isNegative && !b.isNegative) return true;
+  if (!isNegative && b.isNegative) return false;
+
+  if (size != b.size) {
+    return isNegative ? (size > b.size) : (size < b.size);
+  }
+
+  for (int i = static_cast<int>(size)-1; i >= 0; i--) {
+    if (digits[i] != b.digits[i]) {
+      return isNegative ? (digits[i] > b.digits[i]) : (digits[i] < b.digits[i]);
+    }
+  }
+
+  return false;
+}
+
 
 bool BigInt::operator>(const BigInt& b) const {
   if (isNegative && !b.isNegative) return false;
@@ -63,6 +85,7 @@ bool BigInt::operator>(const BigInt& b) const {
 
   return false;
 }
+
 
 bool BigInt::operator==(const BigInt& b) const {
   if (size != b.size) return false;
