@@ -9,16 +9,17 @@ BigInt::BigInt(int n) {
   }
   
   size = 0;
-  while (n > 0) {
-    int digit = n%10;
-    digits.push_back(digit);
-    n = n/10;
-    size++;
-  }
 
   if (n == 0) {
     size++;
     digits.push_back(n);
+  } else {
+    while (n > 0) {
+      int digit = n%10;
+      digits.push_back(digit);
+      n = n/10;
+      size++;
+    }
   }
 }
 
@@ -96,6 +97,17 @@ bool BigInt::operator==(const BigInt& b) const {
   }
 
   return true;
+}
+
+bool BigInt::operator!=(const BigInt& b) const {
+  if (size != b.size) return true;
+  if (isNegative != b.isNegative) return true;
+
+  for (int i = static_cast<int>(size)-1; i >= 0; i--) {
+    if (digits[i] != b.digits[i]) return true;
+  }
+
+  return false;
 }
 
 // overload the << opertor to print the biginteger
