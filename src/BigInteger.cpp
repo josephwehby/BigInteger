@@ -87,6 +87,13 @@ bool BigInt::operator>(const BigInt& b) const {
   return false;
 }
 
+bool BigInt::operator>=(const BigInt& b) const {
+  return (*this > b) || (*this == b);
+}
+
+bool BigInt::operator<=(const BigInt& b) const {
+  return (*this < b) || (*this == b);
+}
 
 bool BigInt::operator==(const BigInt& b) const {
   if (size != b.size) return false;

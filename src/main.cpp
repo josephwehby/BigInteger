@@ -4,19 +4,19 @@
 
 int main() {
   
-  BigInt a = BigInt(5);
+  BigInt a = BigInt(9);
   std::cout << "A: " << a << std::endl;
   
-  BigInt b = BigInt("5");
+  BigInt b = BigInt("-9");
   std::cout << "B: " << b << std::endl;
 
   BigInt c = BigInt("78956432");
   std::cout << "C: " << c << std::endl;
 
-  if (a != b) {
-    std::cout << "A  != B" << std::endl;
+  if (a <= b) {
+    std::cout << "A <= B" << std::endl;
   } else {
-    std::cout << "A == B" << std::endl;
+    std::cout << "A > B" << std::endl;
   }
 
   /*
