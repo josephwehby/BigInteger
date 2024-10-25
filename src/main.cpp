@@ -4,7 +4,7 @@
 
 int main() {
   
-  BigInt a = BigInt(9);
+  BigInt a = BigInt(-190);
   std::cout << "A: " << a << std::endl;
   
   BigInt b = BigInt("-9");
@@ -12,13 +12,8 @@ int main() {
 
   BigInt c = BigInt("78956432");
   std::cout << "C: " << c << std::endl;
-
-  if (a <= b) {
-    std::cout << "A <= B" << std::endl;
-  } else {
-    std::cout << "A > B" << std::endl;
-  }
-
+  
+  std::cout << "A + B = " << a+b << std::endl;
   /*
   std::cout << "A-B = " << bigintmath::Subtract(a, b) << std::endl;
   std::cout << "A/B = " << bigintmath::Divide(a, b) << std::endl;

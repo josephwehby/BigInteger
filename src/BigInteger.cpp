@@ -1,5 +1,11 @@
 #include "BigInteger.hpp"
 
+BigInt::BigInt() {
+  size = 1;
+  isNegative = false;
+  digits.resize(1, 0);
+}
+
 BigInt::BigInt(int n) {
   if (n < 0) {
     isNegative = true;
@@ -50,6 +56,18 @@ BigInt::BigInt(const std::string& n) {
       throw std::invalid_argument("A character in the string is not a number.");
     }
   }
+}
+
+BigInt BigInt::operator+(const BigInt& b) const {
+  BigInt result;
+
+  if (isNegative == b.isNegative) {
+    result = AddAbsolute(b);
+    result.isNegative = isNegative;
+    return result;
+  }
+
+  return result;
 }
 
 bool BigInt::operator<(const BigInt& b) const {
@@ -128,4 +146,56 @@ std::ostream& operator<<(std::ostream& os, const BigInt& a) {
   }
   
   return os;
+}
+
+// private methods
+
+BigInt BigInt::BigIntInit(unsigned int size) {
+  BigInt bigint;
+  bigint.size = size;
+  bigint.digits.resize(size, 0);
+  bigint.isNegative = false;
+  return bigint;
+}
+
+void BigInt::Cleanup() {
+  while (size > 1 && digits.back() == 0) {
+    digits.pop_back();
+    size--;
+  }
+}
+
+BigInt BigInt::AddAbsolute(const BigInt& b) const {
+  const BigInt* min;
+  const BigInt* max;
+
+  if (size < b.size) {
+    min = this;
+    max = &b;
+  } else {
+    min = &b;
+    max = this;
+  }
+
+  BigInt result = BigInt::BigIntInit(max->size);
+
+  uint8_t carry = 0;
+  uint8_t sum = 0;
+
+  for (unsigned int i = 0; i < max->size; i++) {
+    uint8_t min_digit = (i < min->size) ? min->digits[i] : 0;
+    uint8_t max_digit = max->digits[i];
+
+    sum = min_digit + max_digit + carry;
+    result.digits[i] = sum % 10;
+    carry = sum / 10;
+  }
+
+  if (carry > 0) {
+    result.digits.push_back(carry);
+    result.size++;
+  }
+
+  result.Cleanup();
+  return result;
 }

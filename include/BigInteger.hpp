@@ -9,6 +9,7 @@
 
 class BigInt {
   public:
+    BigInt();
     BigInt(int);
     BigInt(const std::string&);
     BigInt(const std::vector<uint8_t>&);
@@ -30,9 +31,10 @@ class BigInt {
     
     friend std::ostream& operator<<(std::ostream&, const BigInt&);
   private:
-    BigInt AddAbsolute(const BigInt&);
+    BigInt AddAbsolute(const BigInt&) const;
     BigInt SubtractAbsolute(const BigInt&);
-    BigInt BigIntInit(unsigned int);
+    static BigInt BigIntInit(unsigned int);
+    void Cleanup();
     std::vector<uint8_t> digits;
     bool isNegative;
     uint32_t size;
