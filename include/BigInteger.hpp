@@ -32,7 +32,7 @@ class BigInt {
     friend std::ostream& operator<<(std::ostream&, const BigInt&);
   private:
     BigInt AddAbsolute(const BigInt&) const;
-    BigInt SubtractAbsolute(const BigInt&);
+    BigInt SubtractAbsolute(const BigInt&) const;
     static BigInt BigIntInit(unsigned int);
     void Cleanup();
     std::vector<uint8_t> digits;

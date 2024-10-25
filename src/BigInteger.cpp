@@ -70,6 +70,16 @@ BigInt BigInt::operator+(const BigInt& b) const {
   return result;
 }
 
+BigInt BigInt::operator-(const BigInt& b) const {
+  BigInt result;
+  if (!isNegative && !b.isNegative) {
+    result = SubtractAbsolute(b);
+    result.isNegative = (*this >= b) ? false : true;
+  } 
+
+  return result;
+}
+
 bool BigInt::operator<(const BigInt& b) const {
   if (isNegative && !b.isNegative) return true;
   if (!isNegative && b.isNegative) return false;
@@ -197,5 +207,42 @@ BigInt BigInt::AddAbsolute(const BigInt& b) const {
   }
 
   result.Cleanup();
+  return result;
+}
+
+BigInt BigInt::SubtractAbsolute(const BigInt& b) const {
+  const BigInt* min;
+  const BigInt* max;
+
+  if (size > b.size) {
+    max = this;
+    min = &b;
+  } else {
+    max = &b;
+    min = this;
+  }
+
+  BigInt result = BigInt::BigIntInit(max->size);
+
+  int borrow = 0;
+  int difference = 0;
+
+  for (unsigned int i = 0; i < max->size; i++) {
+    uint8_t min_digit = (i < min->size) ? min->digits[i] : 0;
+    uint8_t max_digit = max->digits[i];
+
+    difference = max_digit - min_digit - borrow;
+    if (difference < 0) {
+      difference += 10;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+
+    result.digits[i] = static_cast<uint8_t>(difference);
+  }
+
+  result.Cleanup();
+
   return result;
 }
