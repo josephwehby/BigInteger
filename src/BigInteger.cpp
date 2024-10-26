@@ -89,12 +89,29 @@ BigInt BigInt::operator+(const BigInt& b) const {
   return result;
 }
 
+
 BigInt BigInt::operator-(const BigInt& b) const {
   BigInt result;
+  int compare = CompareAbsolute(b);
+  
   if (!isNegative && !b.isNegative) {
-    result = SubtractAbsolute(b, true);
-    result.isNegative = (*this >= b) ? false : true;
-  } 
+    if (compare >= 0) {
+      result = SubtractAbsolute(b, true);
+    } else {
+      result = SubtractAbsolute(b, false);
+    }
+    result.isNegative = (compare >= 0) ? false : true;
+  } else if (isNegative && b.isNegative) {
+    if (compare == 1) {
+      result = SubtractAbsolute(b, true);
+    } else {
+      result = SubtractAbsolute(b, false);
+    }
+    result.isNegative = (compare >= 1) ? true : false; 
+  } else {
+    result = AddAbsolute(b);
+    result.isNegative = (isNegative && !b.isNegative) ? true : false;
+  }
 
   return result;
 }
