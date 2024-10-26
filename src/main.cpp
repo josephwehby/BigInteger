@@ -7,14 +7,15 @@ int main() {
   BigInt a = BigInt(10);
   std::cout << "A: " << a << std::endl;
   
-  BigInt b = BigInt("190");
+  BigInt b = BigInt("-190");
   std::cout << "B: " << b << std::endl;
 
   BigInt c = BigInt("78956432");
   std::cout << "C: " << c << std::endl;
   
   std::cout << "A + B = " << a+b << std::endl;
-  std::cout << "A - B = " << a-b << std::endl;
+  //std::cout << "A - B = " << a-b << std::endl;
+
   /*
   std::cout << "A-B = " << bigintmath::Subtract(a, b) << std::endl;
   std::cout << "A/B = " << bigintmath::Divide(a, b) << std::endl;

@@ -28,12 +28,13 @@ class BigInt {
     bool operator!=(const BigInt&) const;
     static BigInt Pow(const BigInt&);
     static BigInt ModPow(const BigInt&, const BigInt&, const BigInt&);
-    
+    static BigInt Absolute(const BigInt&);    
     friend std::ostream& operator<<(std::ostream&, const BigInt&);
   private:
     BigInt AddAbsolute(const BigInt&) const;
-    BigInt SubtractAbsolute(const BigInt&) const;
+    BigInt SubtractAbsolute(const BigInt&, bool) const;
     static BigInt BigIntInit(unsigned int);
+    int CompareAbsolute(const BigInt&) const;
     void Cleanup();
     std::vector<uint8_t> digits;
     bool isNegative;

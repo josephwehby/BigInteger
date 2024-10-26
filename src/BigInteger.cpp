@@ -67,13 +67,32 @@ BigInt BigInt::operator+(const BigInt& b) const {
     return result;
   }
 
+  int compare = CompareAbsolute(b);
+  bool sign = false;
+  bool a_bigger = true;
+
+  switch(compare) {
+    case -1:
+      sign = b.isNegative;
+      a_bigger = false; 
+      break;
+    case 0:
+      sign = false;
+      break;
+    case 1:
+      sign = isNegative;
+      break;
+  }
+
+  result = SubtractAbsolute(b, a_bigger);
+  result.isNegative = sign;
   return result;
 }
 
 BigInt BigInt::operator-(const BigInt& b) const {
   BigInt result;
   if (!isNegative && !b.isNegative) {
-    result = SubtractAbsolute(b);
+    result = SubtractAbsolute(b, true);
     result.isNegative = (*this >= b) ? false : true;
   } 
 
@@ -210,11 +229,11 @@ BigInt BigInt::AddAbsolute(const BigInt& b) const {
   return result;
 }
 
-BigInt BigInt::SubtractAbsolute(const BigInt& b) const {
+BigInt BigInt::SubtractAbsolute(const BigInt& b, bool a_bigger) const {
   const BigInt* min;
   const BigInt* max;
-
-  if (size > b.size) {
+  
+  if (a_bigger) {
     max = this;
     min = &b;
   } else {
@@ -245,4 +264,17 @@ BigInt BigInt::SubtractAbsolute(const BigInt& b) const {
   result.Cleanup();
 
   return result;
+}
+
+int BigInt::CompareAbsolute(const BigInt& b) const {
+  if (size > b.size) return 1;
+  if (b.size < size) return -1;
+
+  // they are equal size so check digits
+  for (int i = static_cast<int>(size)-1; i >= 0; i--) {
+    if (digits[i] > b.digits[i]) return 1;
+    if (digits[i] < b.digits[i]) return -1;
+  }
+
+  return 0;
 }
