@@ -14,6 +14,7 @@ class BigInt {
     BigInt(const std::string&);
     BigInt(const std::vector<uint8_t>&);
     BigInt operator+(const BigInt&) const;
+    BigInt operator-() const;
     BigInt operator-(const BigInt&) const;
     BigInt operator*(const BigInt&) const;
     BigInt operator/(const BigInt&) const;

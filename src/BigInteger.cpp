@@ -89,6 +89,11 @@ BigInt BigInt::operator+(const BigInt& b) const {
   return result;
 }
 
+BigInt BigInt::operator-() const {
+  BigInt result = *this;
+  result.isNegative = !isNegative;
+  return result;
+}
 
 BigInt BigInt::operator-(const BigInt& b) const {
   BigInt result;
@@ -148,7 +153,7 @@ BigInt BigInt::operator*(const BigInt& b) const {
 }
 
 BigInt BigInt::operator/(const BigInt& b) const {
-  if (b.size == 1 && b.digits[0] == 0) {
+  if (b.size == 1 && b == BigInt(0)) {
     throw std::invalid_argument("Cannot divide by 0");
   }
 
@@ -171,10 +176,36 @@ BigInt BigInt::operator/(const BigInt& b) const {
   }
 
   BigInt left = BigInt(0);
-  BigInt right = *this;
+  BigInt right = isNegative ? -(*this) : *this;
+  BigInt absB = b.isNegative ? -b : b;
   BigInt mid;
   
   while (left.CompareAbsolute(right) <= 0) {
+    mid = (right - left) >> 1;
+    mid = mid + left;
+
+    BigInt product = mid * absB;
+    if (CompareAbsolute(product) > 0) {
+      right = mid - BigInt(1);
+    } else {
+      result = mid;
+      left = mid + BigInt(1);
+    }
+  }
+
+  result.Cleanup();
+  result.isNegative = sign;
+  return result;
+}
+
+BigInt BigInt::operator>>(unsigned int n) const {
+  BigInt result = BigIntInit(size);
+
+  int carry = 0;
+  for (int i = size-1; i >= 0; i--) {
+    int current = digits[i] + (carry*10);
+    result.digits[i] = static_cast<uint8_t>(current/2);
+    carry = current%2;
   }
 
   result.Cleanup();
