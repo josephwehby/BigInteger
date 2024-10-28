@@ -147,6 +147,40 @@ BigInt BigInt::operator*(const BigInt& b) const {
   return result;
 }
 
+BigInt BigInt::operator/(const BigInt& b) const {
+  if (b.size == 1 && b.digits[0] == 0) {
+    throw std::invalid_argument("Cannot divide by 0");
+  }
+
+  BigInt result;
+  int compare = CompareAbsolute(b);
+  bool sign = isNegative ^ b.isNegative;
+  
+  switch (compare) {
+    case -1:
+      result = BigIntInit(1);
+      result.isNegative = sign;
+      return result;
+    case 0:
+      result = BigIntInit(1);
+      result.digits[0] = 1;
+      result.isNegative = sign;
+      return result;
+    default:
+      break;
+  }
+
+  BigInt left = BigInt(0);
+  BigInt right = *this;
+  BigInt mid;
+  
+  while (left.CompareAbsolute(right) <= 0) {
+  }
+
+  result.Cleanup();
+  return result;
+}
+
 bool BigInt::operator<(const BigInt& b) const {
   if (isNegative && !b.isNegative) return true;
   if (!isNegative && b.isNegative) return false;
