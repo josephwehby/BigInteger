@@ -17,6 +17,7 @@ int main() {
   std::cout << "A - B = " << a-b << std::endl;
   std::cout << "A * B = " << a*b << std::endl;
   std::cout << "A / B = " << a/b << std::endl;
+  std::cout << "A % B = " << a%b << std::endl;
 
   /*
   std::cout << "A-B = " << bigintmath::Subtract(a, b) << std::endl;

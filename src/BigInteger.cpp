@@ -199,6 +199,38 @@ BigInt BigInt::operator/(const BigInt& b) const {
   return result;
 }
 
+BigInt BigInt::operator%(const BigInt& b) const {
+  if (b.isNegative || isNegative) throw std::invalid_argument("Mods with negatives are not supported.");
+  if (b.size == 1 && b == 0) throw std::invalid_argument("Cannot divide by 0");
+  
+  BigInt result;
+  if (size == 1 && *this == 0) {
+    result = *this;
+    return result;
+  }
+
+  if (b.size == 1 && *this == 1) {
+    result = BigInt(1);
+    return result;
+  }
+
+  int compare = CompareAbsolute(b);
+  switch(compare) {
+    case -1:
+      result = *this;
+      return result;
+    case 0:
+      result = BigInt(0);
+      return result;
+    default:
+      break;
+  }
+
+  BigInt quotient = *this / b;
+  result = *this - (b * quotient);
+  return result;
+}
+
 BigInt BigInt::operator>>(unsigned int n) const {
   BigInt result = BigIntInit(size);
 
