@@ -4,10 +4,10 @@
 
 int main() {
   
-  BigInt a = BigInt(-10);
+  BigInt a = BigInt(19023);
   std::cout << "A: " << a << std::endl;
   
-  BigInt b = BigInt("190");
+  BigInt b = BigInt("19087");
   std::cout << "B: " << b << std::endl;
 
   BigInt c = BigInt("78956432");
@@ -15,6 +15,7 @@ int main() {
   
   std::cout << "A + B = " << a+b << std::endl;
   std::cout << "A - B = " << a-b << std::endl;
+  std::cout << "A * B = " << a*b << std::endl;
 
   /*
   std::cout << "A-B = " << bigintmath::Subtract(a, b) << std::endl;

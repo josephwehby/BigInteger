@@ -116,6 +116,37 @@ BigInt BigInt::operator-(const BigInt& b) const {
   return result;
 }
 
+BigInt BigInt::operator*(const BigInt& b) const {
+  BigInt result = BigIntInit(size + b.size);
+
+  bool sign = isNegative ^ b.isNegative;
+  result.isNegative = sign;
+
+  const BigInt* min;
+  const BigInt* max;
+
+  if (CompareAbsolute(b) == 1) {
+    max = this;
+    min = &b;
+  } else {
+    max = &b;
+    min = this;
+  }
+
+  for (unsigned int i = 0; i < min->size; i++) {
+    uint8_t carry = 0;
+    for (unsigned int j = 0; j < max->size; j++) {
+      uint16_t product = (min->digits[i] * max->digits[j]) + carry + result.digits[i+j];
+      carry = product / 10;
+      result.digits[i+j] = product % 10;
+    }
+    result.digits[i+max->size] += carry;
+  }
+
+  result.Cleanup();
+  return result;
+}
+
 bool BigInt::operator<(const BigInt& b) const {
   if (isNegative && !b.isNegative) return true;
   if (!isNegative && b.isNegative) return false;
