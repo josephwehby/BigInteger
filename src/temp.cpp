@@ -389,7 +389,7 @@ BigInt bigintmath::Divide(const BigInt& a, const BigInt& b) {
     case -1:
       result = BigIntInit(1);
       result.isNegative = sign;
-      return result;
+      return res== in
     default:
       break;
   }

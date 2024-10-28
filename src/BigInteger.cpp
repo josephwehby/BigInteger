@@ -153,7 +153,7 @@ BigInt BigInt::operator*(const BigInt& b) const {
 }
 
 BigInt BigInt::operator/(const BigInt& b) const {
-  if (b.size == 1 && b == BigInt(0)) {
+  if (b.size == 1 && b == 0) {
     throw std::invalid_argument("Cannot divide by 0");
   }
 
@@ -180,16 +180,17 @@ BigInt BigInt::operator/(const BigInt& b) const {
   BigInt absB = b.isNegative ? -b : b;
   BigInt mid;
   
-  while (left.CompareAbsolute(right) <= 0) {
+  while (left <= right) {
     mid = (right - left) >> 1;
     mid = mid + left;
 
     BigInt product = mid * absB;
-    if (CompareAbsolute(product) > 0) {
-      right = mid - BigInt(1);
-    } else {
+    
+    if (product <= *this) {
       result = mid;
-      left = mid + BigInt(1);
+      left = mid + 1; 
+    } else {
+      right = mid - 1;
     }
   }
 
@@ -382,7 +383,7 @@ BigInt BigInt::SubtractAbsolute(const BigInt& b, bool a_bigger) const {
 int BigInt::CompareAbsolute(const BigInt& b) const {
   if (size > b.size) return 1;
   if (b.size < size) return -1;
-
+  
   // they are equal size so check digits
   for (int i = static_cast<int>(size)-1; i >= 0; i--) {
     if (digits[i] > b.digits[i]) return 1;
