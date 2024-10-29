@@ -164,7 +164,7 @@ BigInt BigInt::operator/(const BigInt& b) const {
   switch (compare) {
     case -1:
       result = BigIntInit(1);
-      result.isNegative = sign;
+      result.isNegative = false;
       return result;
     case 0:
       result = BigIntInit(1);
@@ -193,7 +193,7 @@ BigInt BigInt::operator/(const BigInt& b) const {
       right = mid - 1;
     }
   }
-
+  
   result.Cleanup();
   result.isNegative = sign;
   return result;
@@ -231,7 +231,25 @@ BigInt BigInt::operator%(const BigInt& b) const {
   return result;
 }
 
+BigInt BigInt::operator<<(unsigned int n) const {
+  if (n > 1) throw std::invalid_argument("Only support shifting by 1"); 
+
+  BigInt result = BigIntInit(size);
+
+  int carry = 0;
+  for (unsigned int i = 0; i < size; i++) {
+    int current = carry + (digits[i] * 2);
+    result.digits[i] = static_cast<uint8_t>(current%10);
+    carry = current/10;
+  }
+
+  result.Cleanup();
+  return result;
+}
+
 BigInt BigInt::operator>>(unsigned int n) const {
+  if (n > 1) throw std::invalid_argument("Only support shifting by 1"); 
+  
   BigInt result = BigIntInit(size);
 
   int carry = 0;
@@ -321,6 +339,63 @@ std::ostream& operator<<(std::ostream& os, const BigInt& a) {
   }
   
   return os;
+}
+
+BigInt BigInt::Pow(const BigInt& a, const BigInt& power) {
+  
+  if (power.isNegative) throw std::invalid_argument("Exponent needs to be positive");
+
+  BigInt result;
+  bool sign = false;
+
+  if (power == 0) {
+    result = BigInt(1);
+    result.isNegative = a.isNegative;
+    return result;
+  }
+
+  if (power == 1) {
+    result = a;
+    return result;
+  }
+
+  if (!isEven(power) && a.isNegative) sign = true;
+
+  BigInt round = BigInt(1);
+  result = a;
+
+  while (round < power) {
+    result = a * result;
+    round = round + 1;
+  }
+
+  result.isNegative = sign;
+  return result;
+}
+
+BigInt BigInt::ModPow(const BigInt& a, const BigInt& b, const BigInt& c) {
+  BigInt result = BigInt(1);
+  
+  BigInt base = a;
+  BigInt power = b;
+  BigInt mod = c;
+
+  base = base % mod;
+  
+  while (power > 0) {
+    if (!isEven(power)) {
+      result = (result * base) % mod;
+    }
+    power = power >> 1;
+    base = Pow(base, 2) % mod;
+  }
+
+  return result;
+}
+
+bool BigInt::isEven(const BigInt& a) {
+  if (a.digits[0]%2 == 0) return true;
+  return false;
 }
 
 // private methods
@@ -424,3 +499,4 @@ int BigInt::CompareAbsolute(const BigInt& b) const {
 
   return 0;
 }
+

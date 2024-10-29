@@ -27,16 +27,16 @@ class BigInt {
     bool operator<=(const BigInt&) const;
     bool operator==(const BigInt&) const;
     bool operator!=(const BigInt&) const;
-    static BigInt Pow(const BigInt&);
+    static BigInt Pow(const BigInt&, const BigInt&);
     static BigInt ModPow(const BigInt&, const BigInt&, const BigInt&);
-    static BigInt Absolute(const BigInt&);    
+    static bool isEven(const BigInt&);
     friend std::ostream& operator<<(std::ostream&, const BigInt&);
   private:
+    static BigInt BigIntInit(unsigned int);
+    void Cleanup();
     BigInt AddAbsolute(const BigInt&) const;
     BigInt SubtractAbsolute(const BigInt&, bool) const;
-    static BigInt BigIntInit(unsigned int);
     int CompareAbsolute(const BigInt&) const;
-    void Cleanup();
     std::vector<uint8_t> digits;
     bool isNegative;
     uint32_t size;
