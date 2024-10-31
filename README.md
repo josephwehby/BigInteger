@@ -2,12 +2,13 @@
 Represents integers that are not able to be stored in the traditional data types
 
 # Example Usage
-
 ```
-BigInt a = bigintmath::BigIntFromInt(100);
-BigInt b = bigintmath::BigIntFromString("1234");
-std::cout << bigintmath::Multiply(a, b) << std::endl;
+BigInt a = BigInt(100) 
+BigInt b = BigInt("12345") 
+std::cout << a * b << std::endl;
+std::cout << a + b << std::endl;
 ```
+- The main file includes additional example usages 
 
 # Metrics
 - Below is the time it takes to do a few of the operations in this BigInt library.

@@ -58,6 +58,18 @@ BigInt::BigInt(const std::string& n) {
   }
 }
 
+BigInt::BigInt(const std::vector<uint8_t>& bytes) : BigInt(0) {
+  BigInt base = BigInt(1);
+  BigInt fixed_base = BigInt(256);
+
+  for (int i = bytes.size() - 1; i >= 0; i--) {
+    BigInt num = BigInt(static_cast<int>(bytes[i]));
+    BigInt mult = num * base;
+    *this = mult + *this;
+    base = base * fixed_base;
+  }
+}
+
 BigInt BigInt::operator+(const BigInt& b) const {
   BigInt result;
 
