@@ -36,39 +36,34 @@ std::pair<std::string,std::string> generate_digits(int length) {
 }
 
 long long benchmark(int l) {
-  
-  auto nums = generate_digits(l);
-  BigInt a = bigintmath::BigIntFromString(nums.first);
-  BigInt b = bigintmath::BigIntFromString(nums.second);
+  long long total_duration = 0;
+  const int iterations = 10; 
 
-  // auto letters = generate_bytes(l);
+  for (int i = 0; i < iterations; i++) {
+    auto nums = generate_digits(l);
+    BigInt a = BigInt(nums.first); 
+    BigInt b = BigInt(nums.second); 
 
-  auto start = std::chrono::high_resolution_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
   
-  BigInt result = bigintmath::Add(a, b);
+    BigInt result = a * b;
 
-  //BigInt number = bigintmath::BigIntFromBytes(letters);
-  
-  auto stop = std::chrono::high_resolution_clock::now();
-  
-  auto duration = duration_cast<std::chrono::milliseconds>(stop-start);
+    auto stop = std::chrono::high_resolution_clock::now();
+    std::cout << "RESULT: " << result << std::endl;  
+    auto duration = duration_cast<std::chrono::milliseconds>(stop-start);
+    total_duration += duration.count();
+  }
 
-  return duration.count();
+  return total_duration/iterations;
 }
 
 int main() {
   
   int digits = 1000;
   
-  while (digits <= 10000) {
-    long long average = 0;
-    
-
-    for (int i = 0; i < 10; i++) {
-      average += benchmark(digits);
-    }
-
-    std::cout << digits << " " << average / 10 << std::endl;
+  while (digits <= 15000) {
+    long long average = benchmark(digits); 
+    std::cout << digits << " " << average << std::endl;
     digits += 50;
   }
 
