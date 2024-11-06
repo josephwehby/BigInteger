@@ -3,7 +3,6 @@
 #include "BigInteger.hpp"
 
 int main() {
-  
   BigInt a = BigInt(123234234);
   std::cout << "A: " << a << std::endl;
   

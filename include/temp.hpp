@@ -54,7 +54,7 @@ class BigInt {
     bool operator!=(const BigInt&) const;
     static BigInt Pow(const BigInt&);
     static BigInt ModPow(const BigInt&, const BigInt&, const BigInt&);
-    
+    static BigInt ExtendedEuclidian(const BigInt&, const BigInt&);    
     friend std::ostream& operator<<(std::ostream&, const BigInt&);
   private:
     BigInt AddAbsolute(const BigInt&);

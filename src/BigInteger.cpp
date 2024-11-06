@@ -501,8 +501,8 @@ BigInt BigInt::SubtractAbsolute(const BigInt& b, bool a_bigger) const {
 
 int BigInt::CompareAbsolute(const BigInt& b) const {
   if (size > b.size) return 1;
-  if (b.size < size) return -1;
-  
+  if (b.size > size) return -1;
+
   // they are equal size so check digits
   for (int i = static_cast<int>(size)-1; i >= 0; i--) {
     if (digits[i] > b.digits[i]) return 1;
@@ -511,4 +511,3 @@ int BigInt::CompareAbsolute(const BigInt& b) const {
 
   return 0;
 }
-
