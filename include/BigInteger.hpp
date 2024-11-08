@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <cstdint>
 #include <iostream>
 #include <stdexcept>
@@ -13,6 +14,7 @@ class BigInt {
     BigInt(int);
     BigInt(const std::string&);
     BigInt(const std::vector<uint8_t>&);
+    std::vector<uint8_t> ToBytes();
     BigInt operator+(const BigInt&) const;
     BigInt operator-() const;
     BigInt operator-(const BigInt&) const;

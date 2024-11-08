@@ -70,6 +70,27 @@ BigInt::BigInt(const std::vector<uint8_t>& bytes) : BigInt(0) {
   }
 }
 
+std::vector<uint8_t> BigInt::ToBytes() {
+  std::vector<uint8_t> bytes;
+  BigInt current = *this;
+  BigInt base = BigInt(256);
+
+  while (current > 0) {
+    BigInt remainder = current % base;
+    current = current / base;
+
+    uint8_t byte = 0;
+    for (unsigned int i = 0; i < remainder.size; i++) {
+      byte += remainder.digits[i] * static_cast<uint8_t>(pow(10,i));
+    }
+
+    bytes.push_back(byte);
+  }
+
+  std::reverse(bytes.begin(), bytes.end());
+  return bytes;
+}
+
 BigInt BigInt::operator+(const BigInt& b) const {
   BigInt result;
 
